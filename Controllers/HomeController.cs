@@ -2,6 +2,7 @@
 
 namespace ApiSqlAsp.Controllers
 {
+    [ApiController]
     public class HomeController : ControllerBase
     {
         [HttpGet("")]

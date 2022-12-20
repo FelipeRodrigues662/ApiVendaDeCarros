@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiSqlAsp.Controllers
 {
+    [ApiController]
+    [Route("v1")]
     public class EstadoDeVendaControllers : ControllerBase
     {
         [HttpGet("venda")]

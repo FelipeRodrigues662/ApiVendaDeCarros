@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ApiSqlAsp.Controllers
 {
     [ApiController]
+    [Route("v1")]
     public class ModeloController : ControllerBase
     {
         //Métodos detro de Controllers São chamados de Actions
