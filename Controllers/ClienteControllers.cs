@@ -1,23 +1,25 @@
 ﻿using ApiSqlAsp.DataContext;
 using ApiSqlAsp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiSqlAsp.Controllers
 {
     public class ClienteControllers : ControllerBase
     {
         [HttpGet("cliente")]
-        public IActionResult Get([FromServices] ApiDataContext context)
+        public async Task<IActionResult> GetAsync([FromServices] ApiDataContext context)
         {
-            return Ok(context.Clientes.ToList());
+            var cliente = await context.Clientes.ToListAsync();
+            return Ok(cliente);
         }
 
         [HttpGet("cliente/{id:int}")]
-        public IActionResult GetById(
+        public async Task<IActionResult> GetByIdAsync(
             [FromServices] ApiDataContext context,
             [FromRoute] int id)
         {
-            var client = context.Clientes.FirstOrDefault(x => x.Id == id);
+            var client = await context.Clientes.FirstOrDefaultAsync(x => x.Id == id);
             if(client == null)
                 return NotFound();
 
@@ -25,23 +27,23 @@ namespace ApiSqlAsp.Controllers
         }
 
         [HttpPost("cliente")]
-        public IActionResult Post(
+        public async Task<IActionResult> Post(
             [FromServices] ApiDataContext context,
             [FromBody] Cliente cliente)
         {
-            context.Clientes.Add(cliente);
+            await context.Clientes.AddAsync(cliente);
             context.SaveChanges();
 
             return Created($"cliente/{cliente.Id}",cliente);
         }
 
         [HttpPut("cliente/{id:int}")]
-        public IActionResult Put(
+        public async Task<IActionResult> Put(
             [FromServices] ApiDataContext context,
             [FromRoute] int id,
             [FromBody] Cliente cliente)
         {
-            var client = context.Clientes.FirstOrDefault(x => x.Id == id);
+            var client = await context.Clientes.FirstOrDefaultAsync(x => x.Id == id);
             if (client == null)
                 return NotFound();
 
@@ -49,22 +51,22 @@ namespace ApiSqlAsp.Controllers
             client.Telefone = cliente.Telefone;
 
             context.Clientes.Update(client);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return Ok(client);
         }
 
         [HttpDelete("cliente/{id:int}")]
-        public IActionResult Delete(
+        public async Task<IActionResult> Delete(
             [FromServices] ApiDataContext context,
             [FromRoute] int id)
         {
-            var client = context.Clientes.FirstOrDefault(x => x.Id == id);
+            var client = await context.Clientes.FirstOrDefaultAsync(x => x.Id == id);
             if (client == null)
                 return NotFound();
 
             context.Clientes.Remove(client);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return Ok(client);
         }

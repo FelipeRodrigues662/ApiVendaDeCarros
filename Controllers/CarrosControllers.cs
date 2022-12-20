@@ -1,25 +1,40 @@
 ﻿using ApiSqlAsp.DataContext;
 using ApiSqlAsp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiSqlAsp.Controllers
 {
     [ApiController]
+    [Route("v1")]
     public class CarrosController : ControllerBase
     {
         //Métodos detro de Controllers São chamados de Actions
         [HttpGet("carros")]
-        public IActionResult Get([FromServices] ApiDataContext context)
+        public async Task<IActionResult> GetAsync([FromServices] ApiDataContext context)
         {
-            return Ok(context.Cars.ToList());
+            var cars = await context.Cars
+                .Include(x => x.Modelo)
+                .Include(x => x.EstadoDeVenda)
+                .Include(x => x.EstadoDeVenda.Cliente)
+                .OrderBy(x => x.Valor)
+                .ToListAsync();
+
+            return Ok(cars);
         }
 
         [HttpGet("carros/{id:int}")]
-        public IActionResult GetById(
+        public async Task<IActionResult> GetByIdAsync(
             [FromServices] ApiDataContext context,
             [FromRoute] int id)
         {
-            var caro = context.Cars.FirstOrDefault(x => x.Id == id);
+            var caro = await context
+                .Cars
+                .Include(x => x.Modelo)
+                .Include(x => x.EstadoDeVenda)
+                .Include(x => x.EstadoDeVenda.Cliente)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (caro == null)
                 return NotFound();
 
@@ -27,23 +42,23 @@ namespace ApiSqlAsp.Controllers
         }
 
         [HttpPost("carros")]
-        public IActionResult Post(
+        public async Task<IActionResult> PostAsync(
             [FromServices] ApiDataContext context,
             [FromBody] Carros car)
         {
-            context.Cars.Add(car);
-            context.SaveChanges();
+            await context.Cars.AddAsync(car);
+            await context.SaveChangesAsync();
 
             return Created($"/{car.Id}", car);
         }
 
         [HttpPut("carros/{id:int}")]
-        public IActionResult Put(
+        public async Task<IActionResult> Put(
             [FromRoute] int id,
             [FromServices] ApiDataContext context,
             [FromBody] Carros car)
         {
-            var caro = context.Cars.FirstOrDefault(x => x.Id == id);
+            var caro = await context.Cars.FirstOrDefaultAsync(x => x.Id == id);
             if (caro == null)
                 return NotFound();
 
@@ -52,21 +67,21 @@ namespace ApiSqlAsp.Controllers
             caro.EstadoDeVendaId = car.EstadoDeVendaId;
            
             context.Cars.Update(caro);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return Ok(caro);
         }
 
         [HttpDelete("carros/{id:int}")]
-        public IActionResult Delete(
+        public async Task<IActionResult> Delete(
             [FromRoute] int id,
             [FromServices] ApiDataContext context)
         {
-            var caro = context.Cars.FirstOrDefault(x => x.Id == id);
+            var caro = await context.Cars.FirstOrDefaultAsync(x => x.Id == id);
             if (caro == null)
                 return NotFound();
 
             context.Cars.Remove(caro);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return Ok(caro);
         }
     }

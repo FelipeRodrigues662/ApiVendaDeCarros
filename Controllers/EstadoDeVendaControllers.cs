@@ -1,23 +1,25 @@
 ﻿using ApiSqlAsp.DataContext;
 using ApiSqlAsp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiSqlAsp.Controllers
 {
     public class EstadoDeVendaControllers : ControllerBase
     {
         [HttpGet("venda")]
-        public IActionResult Get([FromServices] ApiDataContext context)
+        public async Task<IActionResult> GetAsync([FromServices] ApiDataContext context)
         {
-            return Ok(context.EstadoDeVendas.ToList());
+            var venda = await context.EstadoDeVendas.ToListAsync();
+            return Ok(venda);
         }
 
         [HttpGet("venda/{id:int}")]
-        public IActionResult GetById(
+        public async Task<IActionResult> GetByIdAsync(
             [FromServices] ApiDataContext context,
             [FromRoute] int id)
         {
-            var venda = context.EstadoDeVendas.FirstOrDefault(x => x.Id == id);
+            var venda = await context.EstadoDeVendas.FirstOrDefaultAsync(x => x.Id == id);
             if (venda == null)
                 return NotFound();
 
@@ -25,23 +27,23 @@ namespace ApiSqlAsp.Controllers
         }
 
         [HttpPost("venda")]
-        public IActionResult Post(
+        public async Task<IActionResult> Post(
             [FromServices] ApiDataContext context,
             [FromBody] EstadoDeVenda estadoDeVenda)
         {
-            context.EstadoDeVendas.Add(estadoDeVenda);
-            context.SaveChanges();
+            await context.EstadoDeVendas.AddAsync(estadoDeVenda);
+            await context.SaveChangesAsync();
 
             return Created($"cliente/{estadoDeVenda.Id}", estadoDeVenda);
         }
 
         [HttpPut("venda/{id:int}")]
-        public IActionResult Put(
+        public async Task<IActionResult> Put(
             [FromServices] ApiDataContext context,
             [FromRoute] int id,
             [FromBody] EstadoDeVenda estadoDeVenda)
         {
-            var sale = context.EstadoDeVendas.FirstOrDefault(x => x.Id == id);
+            var sale = await context.EstadoDeVendas.FirstOrDefaultAsync(x => x.Id == id);
             if (sale == null)
                 return NotFound();
     
@@ -50,22 +52,22 @@ namespace ApiSqlAsp.Controllers
 
 
             context.EstadoDeVendas.Update(sale);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return Ok(sale);
         }
 
         [HttpDelete("venda/{id:int}")]
-        public IActionResult Delete(
+        public async Task<IActionResult> Delete(
             [FromServices] ApiDataContext context,
             [FromRoute] int id)
         {
-            var sale = context.EstadoDeVendas.FirstOrDefault(x => x.Id == id);
+            var sale = await context.EstadoDeVendas.FirstOrDefaultAsync(x => x.Id == id);
             if (sale == null)
                 return NotFound();
 
             context.EstadoDeVendas.Remove(sale);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return Ok(sale);
         }
