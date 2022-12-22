@@ -13,7 +13,7 @@ namespace ApiSqlAsp.DataContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server=tcp:datafelipeestudo.database.windows.net,1433;Database=Api;Initial Catalog=SQL;Persist Security Info=False;User ID=feliperodrigues;Password=@5432109876F;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            options.UseSqlServer("Server=tcp:datafelipeestudo.database.windows.net,1433;Initial Catalog=Api;Persist Security Info=False;User ID=feliperodrigues;Password=@5432109876F;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
