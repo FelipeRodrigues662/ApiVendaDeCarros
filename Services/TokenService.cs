@@ -1,6 +1,7 @@
 ﻿using ApiSqlAsp.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace ApiSqlAsp.Services
@@ -16,6 +17,12 @@ namespace ApiSqlAsp.Services
             // Criei uma especificação do token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, value:"rodrigues"),
+                    //new (ClaimTypes.Role, value:"user"),
+                    new Claim(ClaimTypes.Role, value:"admin")
+                }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
