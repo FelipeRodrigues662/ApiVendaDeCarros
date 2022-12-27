@@ -127,37 +127,6 @@ namespace ApiSqlAsp.Migrations
                     b.ToTable("Modelo", (string)null);
                 });
 
-            modelBuilder.Entity("ApiSqlAsp.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Autorizacao")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("NVARCHAR")
-                        .HasColumnName("Autorizacao");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("NVARCHAR")
-                        .HasColumnName("Password");
-
-                    b.Property<string>("UserNames")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("NVARCHAR")
-                        .HasColumnName("UserNames");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("ApiSqlAsp.Models.Carros", b =>
                 {
                     b.HasOne("ApiSqlAsp.Models.EstadoDeVenda", "EstadoDeVenda")
