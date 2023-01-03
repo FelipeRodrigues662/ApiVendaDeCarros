@@ -30,13 +30,32 @@ namespace ApiSqlAsp.Controllers
 
         //[AllowAnonymous] // Libera a autorização
         [HttpPost("accounts/login")]
-        public IActionResult Login([FromServices] TokenService tokenService)
+        public async Task<IActionResult> LoginAsync(
+            [FromServices] TokenService tokenService,
+            [FromBody] Login model,
+            [FromServices] ApiDataContext context)
         {
-            var token = tokenService.GenerateToken(user);
+            if (model == null)
+                return BadRequest();
 
-            return Ok(token);
+            var user = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserNames == model.UserNames);
+
+            if (user == null)
+                return StatusCode(401, "Usuário ou senha Inválida");
+
+            if (!(model.Password == user.Password))
+                return StatusCode(401, "Usuário ou Senha inválida");
+
+            try
+            {
+                var token = tokenService.GenerateToken(user);
+                return Ok($"Login Efetuado com Sucesso - {token}");
+            }
+            catch
+            {
+                return StatusCode(500, "Falha Interna");
+            }
         }
-
-      
     }
 }
+ 
