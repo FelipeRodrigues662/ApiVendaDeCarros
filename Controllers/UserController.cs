@@ -49,7 +49,7 @@ namespace ApiSqlAsp.Controllers
             try
             {
                 var token = tokenService.GenerateToken(user);
-                return Ok($"Login Efetuado com Sucesso - {token}");
+                return Ok($"Login Efetuado com Sucesso");
             }
             catch
             {
