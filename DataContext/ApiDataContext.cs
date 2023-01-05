@@ -6,16 +6,17 @@ namespace ApiSqlAsp.DataContext
 {
     public class ApiDataContext : DbContext
     {
+        public ApiDataContext(DbContextOptions<ApiDataContext> options) : base(options)
+        {
+
+        }
+
+
         public DbSet<Carros> Cars { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<EstadoDeVenda> EstadoDeVendas { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<User> Users { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer("Server=tcp:localhost,1433;Database=Api ;Persist Security Info=False;User ID=sa;Password=123456789;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   //Mapeamento do entity

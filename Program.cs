@@ -2,6 +2,7 @@ using ApiSqlAsp;
 using ApiSqlAsp.DataContext;
 using ApiSqlAsp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -24,7 +25,8 @@ builder.Services.AddAuthentication(configureOptions: x =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApiDataContext>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApiDataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddTransient<TokenService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
