@@ -1,19 +1,15 @@
-﻿using ApiSqlAsp.DataContext;
 using ApiSqlAsp.Models;
 using ApiSqlAsp.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SecureIdentity.Password;
 
 namespace ApiSqlAsp.Controllers
 {
     [ApiController]
-    [AllowAnonymous]
     [Route("v1")]
     public class UserController : ControllerBase
     {
-        private User user;
+        private readonly User user;
+
 
         [HttpPost("accounts")]
         public async Task<IActionResult> Post(
@@ -34,9 +30,14 @@ namespace ApiSqlAsp.Controllers
             [FromServices] TokenService tokenService,
             [FromBody] Login model,
             [FromServices] ApiDataContext context)
+=======
+        [HttpPost("login")]
+        public IActionResult Login([FromServices] TokenService tokenService)
+
         {
             if (model == null)
                 return BadRequest();
+
 
             var user = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserNames == model.UserNames);
 
@@ -55,6 +56,9 @@ namespace ApiSqlAsp.Controllers
             {
                 return StatusCode(500, "Falha Interna");
             }
+=======
+            return Ok(token);
+
         }
     }
 }
