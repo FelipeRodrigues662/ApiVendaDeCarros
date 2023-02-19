@@ -8,7 +8,7 @@ namespace ApiSqlAsp.DataContext
     {
         public ApiDataContext(DbContextOptions<ApiDataContext> options) : base(options)
         {
-
+           
         }
 
 

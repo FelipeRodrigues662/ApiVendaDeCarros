@@ -5,7 +5,7 @@
 namespace ApiSqlAsp.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,6 +37,21 @@ namespace ApiSqlAsp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Modelo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserNames = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: false),
+                    Password = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: false),
+                    Autorizacao = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,6 +122,9 @@ namespace ApiSqlAsp.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Carros");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "EstadoDeVenda");
