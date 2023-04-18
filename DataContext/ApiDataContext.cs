@@ -16,7 +16,7 @@ namespace ApiSqlAsp.DataContext
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<EstadoDeVenda> EstadoDeVendas { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
-        public DbSet<User> Users { get; set; }
+  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   //Mapeamento do entity
@@ -24,7 +24,6 @@ namespace ApiSqlAsp.DataContext
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new EstadoDeVendaMap());
             modelBuilder.ApplyConfiguration(new ModeloMap());
-            modelBuilder.ApplyConfiguration(new UserMap());
         }
     }
 }

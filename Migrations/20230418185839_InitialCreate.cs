@@ -40,21 +40,6 @@ namespace ApiSqlAsp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserNames = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: false),
-                    Autorizacao = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EstadoDeVenda",
                 columns: table => new
                 {
@@ -122,9 +107,6 @@ namespace ApiSqlAsp.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Carros");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "EstadoDeVenda");
